@@ -8,7 +8,7 @@ services:
       - "9300:9300"
     environment:
       discovery.type: single-node
-      ES_JAVA_OPTS: -Xmx256m -Xms256m
+      ES_JAVA_OPTS: -Xmx2048m -Xms2048m
       ELASTIC_PASSWORD: changeme
       xpack.security.enabled: "false"
       http.cors.enabled: "true"
@@ -17,6 +17,11 @@ services:
       test: curl -f http://elastic:changeme@elasticsearch:9200
       interval: 10s
       timeout: 1s
+    deploy:
+      resources:
+        limits:
+          cpus: "36"
+          memory: "30720M"
   web:
     container_name: rorapiweb
     env_file: .env
@@ -34,3 +39,9 @@ services:
       - ./rorapi:/home/app/webapp/rorapi
     depends_on:
       - elasticsearch
+    deploy:
+      resources:
+        limits:
+          cpus: "8"
+          memory: "2048M"
+  
